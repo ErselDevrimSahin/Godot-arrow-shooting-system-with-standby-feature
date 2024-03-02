@@ -1,1 +1,22 @@
-Godot arrow shooting system with standby feature
+	if Input.is_action_pressed("ranged"):
+		if current.arrow > 0:
+			if is_parry == false:
+				$Sprite2D.play("bow_draw")
+				bow_draw = true
+		
+	if Input.is_action_just_released("ranged"):
+		if current.arrow >= 1:
+			current.arrow -= 1
+			current.get_node("general_system").show_arrow(current.arrow)
+			if is_parry == false:
+				$Sprite2D.play("bow_lose")
+				bow_lose = true
+				bow_draw = false
+				$bow_timer.start()
+				var ranged_attack = RANGED.instantiate()
+				if sign($ranged_pos.position.x) == 1:
+					ranged_attack.set_direction(1)
+				else:
+					ranged_attack.set_direction(-1)
+				get_parent().add_child(ranged_attack)
+				ranged_attack.position = $ranged_pos.global_position
